@@ -11,11 +11,16 @@ const app = express();
 
 // ================= MIDDLEWARES =================
 
+import cors from "cors";
+
 app.use(
   cors({
-    origin: "http://localhost:5173",
-    credentials: true,
-  }),
+    origin: [
+      "http://localhost:5173",
+      "https://gen-ai-interview-personal-guide.vercel.app"
+    ],
+    credentials: true
+  })
 );
 
 app.use(express.json());
