@@ -11,7 +11,7 @@ const app = express();
 
 // ================= MIDDLEWARES =================
 
-import cors from "cors";
+
 
 app.use(
   cors({
