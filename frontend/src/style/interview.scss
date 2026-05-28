@@ -549,7 +549,7 @@ $shadow-orange: rgba(255, 143, 90, 0.22);
       0 0 30px rgba(61, 220, 151, 0.08);
 
     position: relative;
-    overflow: hidden;
+    // overflow: hidden;
 
     &::before {
       content: "";
