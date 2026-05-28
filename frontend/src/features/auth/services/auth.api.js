@@ -68,11 +68,15 @@ export async function logoutUser() {
 
     const token = localStorage.getItem("token");
 
-    const response = await api.get("/logout", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await api.post(
+  "/logout",
+  {},
+  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+);
 
     return response;
 
