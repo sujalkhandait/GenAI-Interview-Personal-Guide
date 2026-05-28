@@ -15,11 +15,10 @@ const app = express();
 
 app.use(
   cors({
-     origin:true,
-    //[
-    //   "http://localhost:5173",
-    //   "https://gen-ai-interview-personal-guide.vercel.app"
-    // ],
+    origin: [
+      "http://localhost:5173",
+      "https://gen-ai-interview-personal-guide.vercel.app"
+    ],
     credentials: true
   })
 );
