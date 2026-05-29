@@ -292,7 +292,7 @@ const Home = () => {
         <div className="description-section">
           <div className="section-header">
             <h2>Self Description</h2>
-            <span className="badge-label">Optional</span>
+            <span className="badge-label">Required</span>
           </div>
 
           {/* <p className="section-description">
