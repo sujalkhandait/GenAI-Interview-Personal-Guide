@@ -32,8 +32,11 @@ const reportRoutes = require("./routes/report.routes");
 
 const authRoutes = require("./routes/auth.routes");
 
+const debugRoutes = require("./routes/debug.routes");
+
 app.use("/api/reports", reportRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/debug", debugRoutes);
 
 // ================= HEALTH CHECK =================
 

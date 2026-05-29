@@ -13,6 +13,11 @@ function generateToken(userId) {
   );
 }
 
+const logServerError = async (payload) => {
+  try {
+    console.error("SERVER_ERROR_LOG:", payload);
+  } catch (e) {}
+};
 
 // ================= REGISTER =================
 
@@ -59,13 +64,18 @@ async function register(req, res) {
 
   } catch (error) {
 
-    console.error("Register Error:", error);
+  await logServerError({
+    type: "REGISTER_ERROR",
+    message: error.message,
+    stack: error.stack,
+    body: req.body,
+  });
 
-    return res.status(500).json({
-      success: false,
-      message: "Internal server error",
-    });
-  }
+  return res.status(500).json({
+    success: false,
+    message: "Internal server error",
+  });
+}
 }
 
 
@@ -120,7 +130,12 @@ async function login(req, res) {
 
   } catch (error) {
 
-    console.error("Login Error:", error);
+  await logServerError({
+    type: "LOGIN_ERROR",
+    message: error.message,
+    stack: error.stack,
+    body: req.body,
+  });
 
     return res.status(500).json({
       success: false,
@@ -161,15 +176,20 @@ async function logout(req, res) {
       message: "Logout successful",
     });
 
-  } catch (error) {
+} catch (error) {
 
-    console.error("Logout Error:", error);
+  await logServerError({
+    type: "LOGOUT_ERROR",
+    message: error.message,
+    stack: error.stack,
+    token: req.headers.authorization,
+  });
 
-    return res.status(500).json({
-      success: false,
-      message: "Internal server error",
-    });
-  }
+  return res.status(500).json({
+    success: false,
+    message: "Internal server error",
+  });
+}
 }
 
 
@@ -195,13 +215,18 @@ async function getMe(req, res) {
 
   } catch (error) {
 
-    console.error("GetMe Error:", error);
+  await logServerError({
+    type: "GETME_ERROR",
+    message: error.message,
+    stack: error.stack,
+    userId: req.user?.id,
+  });
 
-    return res.status(500).json({
-      success: false,
-      message: "Internal server error",
-    });
-  }
+  return res.status(500).json({
+    success: false,
+    message: "Internal server error",
+  });
+}
 }
 
 module.exports = {

@@ -13,7 +13,19 @@ import {
 
 
 export const AuthContext = createContext();
-
+const logClientError = async (payload) => {
+  try {
+    await fetch(`${import.meta.env.VITE_API_URL}/api/debug/client-error`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+  } catch (e) {
+    console.error("Failed to send client error log:", e);
+  }
+};
 
 export const AuthProvider = ({ children }) => {
 
@@ -43,14 +55,16 @@ export const AuthProvider = ({ children }) => {
         setUser(response.data.user);
 
       } catch (error) {
-
         console.error(
           "Failed to fetch current user:",
           error
         );
-
-        localStorage.removeItem("token");
-        setUser(null);
+       await logClientError({
+  type: "BOOTSTRAP_USER_ERROR",
+  message: error.message,
+  status: error.response?.status,
+  response: error.response?.data,
+});
 
       } finally {
 
@@ -89,6 +103,15 @@ export const AuthProvider = ({ children }) => {
         "Login failed:",
         error
       );
+      
+     await logClientError({
+  type: "LOGIN_ERROR",
+  message: error.message,
+  error: error.message,
+  email: email || null,
+  status: error.response?.status,
+  response: error.response?.data,
+});
 
       throw error;
     }
@@ -122,13 +145,20 @@ export const AuthProvider = ({ children }) => {
 
     } catch (error) {
 
-      console.error(
-        "Register failed:",
-        error
-      );
+  console.error("Register failed:", error);
 
-      throw error;
-    }
+  await logClientError({
+    type: "REGISTER_ERROR",
+    message: error.message,
+    error: error.message,
+   username: username || null,
+    email: email || null,
+    status: error.response?.status,
+    response: error.response?.data,
+  });
+
+  throw error;
+}
   };
 
 
